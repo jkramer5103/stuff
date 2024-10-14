@@ -1,5 +1,4 @@
 from os import system as sys
-sys("pip install flask dhooks")
 from flask import Flask, request
 import socket
 from dhooks import Webhook
