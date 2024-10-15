@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import discord
 from discord import app_commands
 from dhooks import Webhook
 from os import system
@@ -15,6 +16,20 @@ import base64
 import hashlib
 
 password_right = False
+
+def derive_key(password, salt):
+    kdf = Scrypt(
+        salt=salt,
+        length=32,
+        n=2**14,
+        r=8,
+        p=1,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode())
+    return key
+
+
 
 def hash_string(input_string):
     # SHA-256 Hash erzeugen
