@@ -141,7 +141,7 @@ if len(sys.argv) > 1:
     print(f"Das übergebene Argument ist: {argument}")
 else:
     sys.exit()
-token = decrypt_string(argument, "pEt0ACzUovE+6Jcxb5idaoU6kOMaYzWzd8R6VGoU3UhimrGfRU+rdqTBMLgVcWVdJpFJr1xx0n8xGtTPLX3xbsF2BsZowt4x53RYeofblYZmwEq+4gOCqbXLPIVBQKzg4M2JLD1J4GHBqTPcp6Qmcw==")
+token = decrypt_string(argument, "3CulZjOuKEg69bXsIt/tn7xljLLBERXliUgmY3ZU7FiFOkHV/GdWEP0t9UsW4ZlWirvVctKympkCH/48MKD2nnWDgGCaGpOgnwotPYCUEIeTrLD288KnkWqhMwzj67NtUR3X+JFOSyKYT3SmXx+tcA==")
 if token == "err":
     sys.exit()
 
