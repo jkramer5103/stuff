@@ -1,18 +1,17 @@
 from setuptools import setup, find_packages
+import secrets
 
 setup(
-    name='jlkutils',
-    version='0.13',
+    name=secrets.name,
+    version='0.1',
     packages=find_packages(),
-    install_requires=[
-        "cryptography", "opencv-python", "openai", "tkinter",
-    ],   author='Jaron Kramer',
-    description='Allgemeine Library für allen moglichen Praktischen Stuff',
-    url='https://github.com/jkramer5103/jlkutils',  # Optional: URL zu deinem Projekt
+    install_requires=secrets.packages,
+    author=secrets.author,
+    description=secrets.description,
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
+        f'Operating System :: {opsy}',
     ],
     python_requires='>=3.6',
 )
